@@ -1,4 +1,5 @@
 import { Card, Row, Col } from "react-bootstrap";
+import { memo } from "react";
 
 /**
  * 
@@ -13,7 +14,7 @@ import { Card, Row, Col } from "react-bootstrap";
  * @returns A formatted bar of subscription information
  *  that will get organized by the subscription list
  */
-export default function SubscriptionItemBar(props) {
+function SubscriptionItemBar(props) {
 
     return (
         <Card style={{ backgroundColor: props.color, marginBottom: "1rem", width: "600px", height: "100%" }}>
@@ -52,3 +53,4 @@ export default function SubscriptionItemBar(props) {
     );
 }
 
+export default memo(SubscriptionItemBar);

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Container } from "react-bootstrap";
 import SubscriptionItemBar from "../content/SubscriptionItemBar.jsx";
+import SubscriptionInputForm from "../content/SubscriptionInputForm.jsx";
 
 export default function SubscriptionList() {
-    // Example subscriptions array
     const [subscriptions, setSubscriptions] = useState([
         {
             id: 1,
@@ -13,7 +13,7 @@ export default function SubscriptionList() {
             renewCycleTime: "Monthly",
             renewDate: "Dec. 19",
             color: "red",
-            imgUrl: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+            imgUrl: "https://images.ctfassets.net/y2ske730sjqp/5QQ9SVIdc1tmkqrtFnG9U1/de758bba0f65dcc1c6bc1f31f161003d/BrandAssets_Logos_02-NSymbol.jpg?w=940"
         },
         {
             id: 2,
@@ -37,14 +37,26 @@ export default function SubscriptionList() {
         }
     ]);
 
-    function createSubscription(priority, title) {
-        // Implementation for adding a subscription
+    function createSubscription({ imgUrl, title, renewCycleTime, renewDate }) {
+        const newSubscription = {
+            id: Date.now(), // unique id
+            priority: "Medium", // default priority, you can add a field to the form if needed
+            title,
+            price: 0, // default price, you can add a field to the form if needed
+            renewCycleTime,
+            renewDate,
+            color: "gray", // default color, or let user pick
+            imgUrl
+        };
+        setSubscriptions(subs => [...subs, newSubscription]);
     }
 
     return (
-        <Container style={{ marginTop: "2rem", marginBottom: "2rem" }} fluid>
+        <Container style={{ marginTop: "2rem", marginBottom: "2rem", alignItems: "center", display: "flex", flexDirection: "column" }}>
             <h1>Your Subscriptions</h1>
             <p>Manage and view all your active subscriptions below.</p>
+
+            <SubscriptionInputForm onSubmit={createSubscription} />
 
             {subscriptions.map(sub => (
                 <SubscriptionItemBar
