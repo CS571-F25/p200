@@ -28,8 +28,8 @@ function SubscriptionItemBar(props) {
             style={{
                 backgroundColor: props.color,
                 minHeight: 100,
-                minWidth: "59vw",
-                margin: 8,
+                minWidth: "50vw",
+                marginBottom: 8,
                 maxWidth: "100%",
                 borderColor: "black",
                 borderWidth: 4

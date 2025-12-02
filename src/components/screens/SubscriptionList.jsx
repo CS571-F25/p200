@@ -55,36 +55,37 @@ export default function SubscriptionList() {
 
 
     return (
-        <Container fluid style={{ height: "100vh", marginTop: "4rem" }}>
+        <Container fluid style={{ height: "100vh", marginTop: "5rem" }}>
             <Row>
 
                 <Col xs={12} md={4} >
                     <Card
                         style={{
-                            backgroundColor: "lightgrey",
-                            marginTop: "1rem",
+                            backgroundColor: "transparent",
                             padding: "1rem",
-                            minWidth: "29vw"
+
                         }}>
-                            <h1>EDIT/ADD/SEARCH</h1>
-                            {isCreating ? <>
-                                <SubscriptionInputForm />
-                            </> : <></>}
-                            {isEditing ? <></> : <></>}
-                            {isSearching ? <></> : <></>}
-                        </Card>
+                        <h1 style={{ backgroundColor: "white", borderRadius: 8, padding: 10, width: 340 }}>{
+                            isCreating ? "Add Subscription" : isEditing ? "Edit Subscription" :
+                                isSearching ? "Search Subscriptions" : "Manage Subscriptions"
+                        }</h1>
+                        {isCreating ? <>
+                            <SubscriptionInputForm setIsCreating={setIsCreating} setSubscriptions={setSubscriptions} />
+                        </> : <></>}
+                        {isEditing ? <></> : <></>}
+                        {isSearching ? <></> : <></>}
+                    </Card>
                 </Col>
 
                 <Col xs={12} md={8}
                     style={{
-                        backgroundColor: "lightgrey",
+                        backgroundColor: "transparent",
                         borderRadius: 10,
-                        marginTop: "1rem",
                         padding: "1rem",
                     }}>
-                    <h1>My Subscriptions:</h1>
+                    <h1 style={{ backgroundColor: "white", borderRadius: 8, padding: 10, width: 340 }}>My Subscriptions:</h1>
                     {/* TODO: create addsubscriptionbar, when pressed, sets IsCreating state var, changes side to create Subscription*/}
-                    {subscriptions.map((sub) => (
+                    {subscriptions && subscriptions.map((sub) => (
                         <SubscriptionItemBar
                             key={sub.id}
                             priority={sub.priority}
@@ -97,7 +98,7 @@ export default function SubscriptionList() {
                             imgUrl={sub.imgUrl}
                             setSubs={setSubscriptions}
                         />
-                    ))}
+                    )) || <><p>Loading...</p></>}
                 </Col>
             </Row>
         </Container>

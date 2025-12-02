@@ -5,7 +5,13 @@
 }
 
 body {
-  background-color: rgb(42, 42, 42);
+  background: none;
+  margin: 1rem;
+}
+
+html {
+  background: #020024;
+  background: linear-gradient(141deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 32%, rgba(0, 212, 255, 1) 100%);
 }
 
 .logo {
@@ -14,9 +20,11 @@ body {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }

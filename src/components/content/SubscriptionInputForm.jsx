@@ -4,7 +4,6 @@ import { Form, Button, Card, Row, Col } from "react-bootstrap";
 
 export default function SubscriptionInputForm(props) {
     const [formData, setFormData] = useState({
-        img: "",
         title: "",
         renewCycleTime: "",
         renewDate: "",
@@ -14,6 +13,8 @@ export default function SubscriptionInputForm(props) {
         textColor: "#000000",
         color: "#ffffff"
     });
+
+    const [previewImage, setPreviewImage] = useState(null);
 
     console.log("Form Data:", formData);
 
@@ -27,18 +28,39 @@ export default function SubscriptionInputForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit && onSubmit(formData);
+        console.log("Submitting form with data:", formData);
+
+        props.setSubscriptions((prev) => [
+            ...prev,
+            {
+                id: Date.now(),
+                imgUrl: previewImage,
+                title: formData.title,
+                renewCycleTime: formData.renewCycleTime,
+                renewDate: formData.renewDate,
+                price: parseFloat(formData.price),
+                color: formData.color,
+                textColor: formData.textColor,
+                priority: formData.priority,
+                category: formData.category,
+            },
+        ]);
+
         setFormData({
-            img: "",
             title: "",
             renewCycleTime: "",
             renewDate: "",
             price: "",
             category: "",
-            priority: 5
+            priority: 5,
+            textColor: "#000000",
+            color: "#ffffff",
         });
-        props.setIsCreating
+        setPreviewImage(null);
+
+        props.setIsCreating(false);
     };
+
 
 
     return (
@@ -80,14 +102,18 @@ export default function SubscriptionInputForm(props) {
                         <Col md={6}>
                             <Form.Group className="mb-3">
                                 <Form.Label>Renewal Cycle</Form.Label>
-                                <Form.Control
-                                    type="text"
+                                <Form.Select
                                     name="renewCycleTime"
-                                    placeholder="e.g. Monthly"
                                     value={formData.renewCycleTime}
                                     onChange={handleChange}
                                     required
-                                />
+                                >
+                                    <option value="Daily">Daily</option>
+                                    <option value="Weekly">Weekly</option>
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Yearly">Yearly</option>
+                                </Form.Select>
+
                             </Form.Group>
                         </Col>
                         <Col md={6}>
@@ -156,11 +182,11 @@ export default function SubscriptionInputForm(props) {
                                     value={formData.img}
                                     onChange={(e) => {
                                         const file = e.target.files[0];
-                                        setFormData((prev) => ({
-                                            ...prev,
-                                            img: URL.createObjectURL(file)
-                                        }));
-                                        createObjectURL(file);
+                                        console.log("Selected file:", file);
+                                        if (file) {
+                                            const imageUrl = URL.createObjectURL(file);
+                                            setPreviewImage(imageUrl);
+                                        }
                                     }}
                                 />
                             </Form.Group>
@@ -173,7 +199,7 @@ export default function SubscriptionInputForm(props) {
                                 objectFit: "cover",
                                 objectPosition: "center",
                                 borderRadius: "8px"
-                            }} src={formData.img && formData.img || ""}></img>
+                            }} src={previewImage && previewImage || <></>}></img>
                         </Col>
                     </Row>
 
@@ -210,7 +236,9 @@ export default function SubscriptionInputForm(props) {
                         <Button
                             type="button"
                             variant="secondary"
-                            onClick={() => setShowForm(false)}
+                            onClick={() => {
+                                setShowForm(false);
+                            }}
                         >
                             Cancel
                         </Button>
