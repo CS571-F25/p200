@@ -6,14 +6,15 @@ import './App.css';
 import Home from './components/screens/Home';
 import SubscriptionList from './components/screens/SubscriptionList';
 import AboutMe from './components/screens/AboutMe';
-import CalendarTab from './components/screens/CalendarTab'; // Import the new CalendarTab
+import CalendarTab from './components/screens/CalendarTab';
+import TestScreen from './components/screens/TestScreen';
 
 function App() {
   return (
     <HashRouter>
       {/* Primary navigation bar */}
       <Navbar bg="dark" variant="dark" fixed="top" expand="sm" collapseOnSelect>
-        <Container>
+        <Container fluid>
           <Navbar.Brand as={Link} to="/">
             SubTracker
           </Navbar.Brand>
@@ -33,6 +34,9 @@ function App() {
               <Nav.Link as={Link} to="/about">
                 About Me
               </Nav.Link>
+              <Nav.Link as={Link} to="/test">
+                Test
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -44,6 +48,7 @@ function App() {
         <Route path="/subscriptions" element={<SubscriptionList />} />
         <Route path="/calendar" element={<CalendarTab />} /> {/* Add CalendarTab route */}
         <Route path="/about" element={<AboutMe />} />
+        <Route path='/test' element={<TestScreen />} />
       </Routes>
     </HashRouter>
   );
