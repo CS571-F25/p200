@@ -193,11 +193,12 @@ export default function SubscriptionInputForm(props) {
                         </Col>
 
                         <Col md={6}>
-                            <p>Preview:</p>
+                            <p>Preview Image</p>
                             <img style={{
                                 width: "60px",
                                 objectFit: "cover",
                                 objectPosition: "center",
+                                justifySelf: "center",
                                 borderRadius: "8px"
                             }} src={previewImage && previewImage || <></>}></img>
                         </Col>

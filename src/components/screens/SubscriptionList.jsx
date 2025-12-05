@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import SubscriptionItemBar from "../content/SubscriptionItemBar.jsx";
 import SubscriptionInputForm from "../content/SubscriptionInputForm.jsx";
+import EditSubscriptionForm from "../content/EditSubscriptionForm.jsx";
 
 export default function SubscriptionList() {
     const [subscriptions, setSubscriptions] = useState([
@@ -41,8 +42,8 @@ export default function SubscriptionList() {
         }
     ]);
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [isCreating, setIsCreating] = useState(true);
+    const [isEditing, setIsEditing] = useState(true);
+    const [isCreating, setIsCreating] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
 
     const [imgUrl, setImgUrl] = useState("");
@@ -72,7 +73,9 @@ export default function SubscriptionList() {
                         {isCreating ? <>
                             <SubscriptionInputForm setIsCreating={setIsCreating} setSubscriptions={setSubscriptions} />
                         </> : <></>}
-                        {isEditing ? <></> : <></>}
+                        {isEditing ? <>
+                            <EditSubscriptionForm setIsEditing={setIsEditing} setSubscriptions={setSubscriptions} />
+                        </> : <></>}
                         {isSearching ? <></> : <></>}
                     </Card>
                 </Col>
@@ -82,6 +85,7 @@ export default function SubscriptionList() {
                         backgroundColor: "transparent",
                         borderRadius: 10,
                         padding: "1rem",
+                        border: "2px solid black",
                     }}>
                     <h1 style={{ backgroundColor: "white", borderRadius: 8, padding: 10, width: 340 }}>My Subscriptions:</h1>
                     {/* TODO: create addsubscriptionbar, when pressed, sets IsCreating state var, changes side to create Subscription*/}
