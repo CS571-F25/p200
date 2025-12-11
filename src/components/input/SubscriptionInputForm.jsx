@@ -6,7 +6,7 @@ export default function SubscriptionInputForm(props) {
 
     const [formData, setFormData] = useState({
         title: "",
-        renewCycle: "",
+        renewCycle: "Monthly",
         renewDate: "",
         price: 0.00,
         category: "",
@@ -75,8 +75,6 @@ export default function SubscriptionInputForm(props) {
             color: "#ffffff",
         });
         setPreviewImage(null);
-
-        props.setIsCreating(false);
     };
 
 
