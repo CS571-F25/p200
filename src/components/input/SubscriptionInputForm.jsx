@@ -3,18 +3,20 @@ import { Form, Button, Card, Row, Col } from "react-bootstrap";
 
 
 export default function SubscriptionInputForm(props) {
+
     const [formData, setFormData] = useState({
         title: "",
-        renewCycleTime: "",
+        renewCycle: "",
         renewDate: "",
-        price: "",
+        price: 0.00,
         category: "",
-        priority: 5,
+        priority: "Medium",
         textColor: "#000000",
         color: "#ffffff"
     });
 
     const [previewImage, setPreviewImage] = useState(null);
+    const [priceInput, setPriceInput] = useState("");
 
     console.log("Form Data:", formData);
 
@@ -26,8 +28,24 @@ export default function SubscriptionInputForm(props) {
         }));
     };
 
+    const priceRegex = /^\d*\.?\d{0,2}$/;
+    // digits, optional one dot, max 2 decimals
+
+    const handlePriceChange = (e) => {
+        const { name, value } = e.target;
+
+
+        // Allow empty string so user can clear the field
+        if (value === "" || priceRegex.test(value)) {
+            setPriceInput(value);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const renewDateArr = formData.renewDate.split("-");
+
+
         console.log("Submitting form with data:", formData);
 
         props.setSubscriptions((prev) => [
@@ -36,9 +54,9 @@ export default function SubscriptionInputForm(props) {
                 id: Date.now(),
                 imgUrl: previewImage,
                 title: formData.title,
-                renewCycleTime: formData.renewCycleTime,
+                renewCycle: formData.renewCycle,
                 renewDate: formData.renewDate,
-                price: parseFloat(formData.price),
+                price: parseFloat(priceInput).toFixed(2),
                 color: formData.color,
                 textColor: formData.textColor,
                 priority: formData.priority,
@@ -48,7 +66,7 @@ export default function SubscriptionInputForm(props) {
 
         setFormData({
             title: "",
-            renewCycleTime: "",
+            renewCycle: "",
             renewDate: "",
             price: "",
             category: "",
@@ -62,9 +80,8 @@ export default function SubscriptionInputForm(props) {
     };
 
 
-
     return (
-        <Card className="mb-4">
+        <Card className="mb-4" style={{ backgroundColor: "white" }}>
             <Card.Body>
                 <Form onSubmit={handleSubmit}>
                     <Row>
@@ -74,7 +91,7 @@ export default function SubscriptionInputForm(props) {
                                 <Form.Control
                                     type="text"
                                     name="title"
-                                    placeholder="Subscription Name"
+                                    placeholder="e.g. Wifi"
                                     value={formData.title}
                                     onChange={handleChange}
                                     required
@@ -85,15 +102,14 @@ export default function SubscriptionInputForm(props) {
                             <Form.Group className="mb-3">
                                 <Form.Label>Price</Form.Label>
                                 <Form.Control
-                                    type="number"
+                                    type="text"
                                     name="price"
-                                    min="0"
-                                    step="0.01"
                                     placeholder="9.99"
-                                    value={formData.price}
-                                    onChange={handleChange}
+                                    value={priceInput}
+                                    onChange={handlePriceChange}
                                     required
                                 />
+
                             </Form.Group>
                         </Col>
                     </Row>
@@ -103,15 +119,17 @@ export default function SubscriptionInputForm(props) {
                             <Form.Group className="mb-3">
                                 <Form.Label>Renewal Cycle</Form.Label>
                                 <Form.Select
-                                    name="renewCycleTime"
-                                    value={formData.renewCycleTime}
+                                    name="renewCycle"
+                                    value={formData.renewCycle}
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="Daily">Daily</option>
                                     <option value="Weekly">Weekly</option>
                                     <option value="Monthly">Monthly</option>
+                                    <option value="Quarterly">Quarterly</option>
+                                    <option value="Biannually">Biannually</option>
                                     <option value="Yearly">Yearly</option>
+                                    <option value="Other">Other</option>
                                 </Form.Select>
 
                             </Form.Group>
@@ -120,7 +138,7 @@ export default function SubscriptionInputForm(props) {
                             <Form.Group className="mb-3">
                                 <Form.Label>Renewal Date</Form.Label>
                                 <Form.Control
-                                    type="text"
+                                    type="date"
                                     name="renewDate"
                                     placeholder="e.g. Dec. 19"
                                     value={formData.renewDate}
@@ -152,16 +170,10 @@ export default function SubscriptionInputForm(props) {
                                     value={formData.priority}
                                     onChange={handleChange}
                                 >
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                    <option value="Extreme">Extreme</option>
 
 
                                 </Form.Select>
@@ -170,35 +182,26 @@ export default function SubscriptionInputForm(props) {
                     </Row>
 
                     <Row>
-                        <Col md={6}>
-                            <Form.Group className="mb-3">
+                        <Col md={8}>
+                            <Form.Group controlId="formSubImage" className="mb-3">
                                 <Form.Label>Subscription Image</Form.Label>
-                                <Form.Control
-                                    type="file"
-                                    id="imageUpload"
-                                    name="imageUpload"
-                                    accept="image/*"
-                                    placeholder="Paste image URL"
-                                    value={formData.img}
-                                    onChange={(e) => {
-                                        const file = e.target.files[0];
-                                        console.log("Selected file:", file);
-                                        if (file) {
-                                            const imageUrl = URL.createObjectURL(file);
-                                            setPreviewImage(imageUrl);
-                                        }
-                                    }}
-                                />
+                                <Form.Control type="file" accept="image/*" value={formData.img} onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    console.log("Selected file:", file);
+                                    if (file) {
+                                        const imageUrl = URL.createObjectURL(file);
+                                        setPreviewImage(imageUrl);
+                                    }
+                                }} />
                             </Form.Group>
                         </Col>
 
-                        <Col md={6}>
+                        <Col md={4} align="center">
                             <p>Preview Image</p>
                             <img style={{
                                 width: "60px",
                                 objectFit: "cover",
                                 objectPosition: "center",
-                                justifySelf: "center",
                                 borderRadius: "8px"
                             }} src={previewImage && previewImage || <></>}></img>
                         </Col>
@@ -230,20 +233,35 @@ export default function SubscriptionInputForm(props) {
                         </Col>
 
                     </Row>
-                    <div className="d-flex gap-2">
-                        <Button type="submit" variant="success">
-                            Add Subscription
-                        </Button>
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            onClick={() => {
-                                setShowForm(false);
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </div>
+                    <Row>
+                        <Col xs={12} md={6}>
+                            <Button type="submit" variant="success" style={{ width: "100%" }}>
+                                Add Subscription
+                            </Button>
+                        </Col>
+                        <Col xs={12} md={6}>
+                            <Button
+                                style={{ width: "100%" }}
+                                type="button"
+                                variant="secondary"
+                                onClick={() => {
+                                    setFormData({
+                                        title: "",
+                                        renewCycle: "",
+                                        renewDate: "",
+                                        price: 0.00,
+                                        category: "",
+                                        priority: "Medium",
+                                        textColor: "#000000",
+                                        color: "#ffffff"
+                                    });
+                                    setPriceInput("")
+                                }}
+                            >
+                                Clear
+                            </Button>
+                        </Col>
+                    </Row>
                 </Form>
             </Card.Body>
         </Card>

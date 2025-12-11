@@ -1,31 +1,32 @@
-import SubscriptionItemBar from "../content/SubscriptionItemBar";
+import { Container, Row, Col } from "react-bootstrap";
 
 export default function Home() {
     return (
-        <div style={{ maxWidth: 700, margin: "0 auto", padding: "2rem" }}>
-            <h1>Welcome to SubTracker</h1>
-            <p>
-                SubTracker helps you manage and track all your subscriptions in one place.
-                Stay on top of renewal dates, costs, and never miss a payment again!
-            </p>
-            <ul>
-                <li>View and organize your active subscriptions</li>
-                <li>Track renewal cycles and upcoming charges</li>
-                <li>Analyze your monthly spending</li>
-                <li>Customize subscription priorities and categories</li>
-                <li>And much more!</li>
-            </ul>
-            <hr />
-            <h2>Example Subscription</h2>
-            <SubscriptionItemBar
-                priority={1}
-                color="red"
-                imgUrl="https://images.ctfassets.net/y2ske730sjqp/5QQ9SVIdc1tmkqrtFnG9U1/de758bba0f65dcc1c6bc1f31f161003d/BrandAssets_Logos_02-NSymbol.jpg?w=940"
-                title="Netflix"
-                price={25}
-                renewCycleTime="Every Month"
-                renewDate="Dec. 19"
-            />
-        </div>
+        <Container>
+            <div style={{ margin: "0 auto", padding: "2rem", color: "white", textAlign: "center" }}>
+                <h1 style={{ fontSize: 150, backgroundColor: "purple", borderRadius: 12, textShadow: "blue" }}>SubTracker</h1>
+            </div>
+            <Row>
+                <Col>
+                    <p style={{ fontSize: 30, width: "80%", margin: "0 auto", marginBottom: 20, padding: 15, backgroundColor: "white" }}>
+                        SubTracker helps you manage and track all your subscriptions in one place.
+                        Stay on top of renewal dates, costs, and never miss a payment again!
+                    </p>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <ul style={{ fontSize: 20, margin: "0 auto", textAlign: "center", width: "auto", listStyle: "none", fontWeight: "bold" }}>
+                        <li>View and organize your active subscriptions</li>
+                        <li>Track renewal cycles and upcoming charges</li>
+                        <li>Analyze your monthly spending</li>
+                        <li>Customize subscription priorities and categories</li>
+                        <li>And much more!</li>
+                    </ul>
+                </Col>
+            </Row>
+
+        </Container>
+
     );
 }

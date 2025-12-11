@@ -1,72 +1,45 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import SubscriptionItemBar from "../content/SubscriptionItemBar.jsx";
-import SubscriptionInputForm from "../content/SubscriptionInputForm.jsx";
-import EditSubscriptionForm from "../content/EditSubscriptionForm.jsx";
+import SubscriptionInputForm from "../input/SubscriptionInputForm.jsx";
+import EditSubscriptionForm from "../input/EditSubscriptionForm.jsx";
 
-export default function SubscriptionList() {
-    const [subscriptions, setSubscriptions] = useState([
-        {
-            id: 1,
-            priority: "High",
-            title: "Netflix",
-            price: 15.99,
-            renewCycleTime: "Monthly",
-            renewDate: "Dec. 19",
-            color: "red",
-            textColor: "white",
-            imgUrl: "https://images.ctfassets.net/y2ske730sjqp/5QQ9SVIdc1tmkqrtFnG9U1/de758bba0f65dcc1c6bc1f31f161003d/BrandAssets_Logos_02-NSymbol.jpg?w=940"
-        },
-        {
-            id: 2,
-            priority: "Medium",
-            title: "Spotify",
-            price: 9.99,
-            renewCycleTime: "Monthly",
-            renewDate: "Dec. 25",
-            color: "green",
-            textColor: "white",
-            imgUrl: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg"
-        },
-        {
-            id: 3,
-            priority: "Low",
-            title: "Disney+",
-            price: 7.99,
-            renewCycleTime: "Monthly",
-            renewDate: "Jan. 5",
-            color: "blue",
-            textColor: "white",
+import { SubscriptionDataContext } from "../contexts/SubscriptionDataContext.js";
 
-            imgUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg"
-        }
-    ]);
+/**
+ * 
+ * @returns A screen that displays a list of subscriptions, and allows for adding, editing, and searching subscriptions.
+ */
 
-    const [isEditing, setIsEditing] = useState(true);
-    const [isCreating, setIsCreating] = useState(false);
+export default function SubscriptionList(props) {
+
+    const [subscriptions, setSubscriptions] = useContext(SubscriptionDataContext)
+    const [selectedSubscription, setSelectedSubscription] = useState({})
+    console.log(subscriptions)
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [isCreating, setIsCreating] = useState(true);
     const [isSearching, setIsSearching] = useState(false);
+    console.log(isEditing);
+    console.log(isCreating);
 
-    const [imgUrl, setImgUrl] = useState("");
-    const [title, setTitle] = useState("");
-    const [renewCycleTime, setRenewCycleTime] = useState("");
-    const [renewDate, setRenewDate] = useState("");
-    const [price, setPrice] = useState("");
-    const [color, setColor] = useState("");
-    const [textColor, setTextColor] = useState("");
+    function handleSubscriptionEdit(editedSubscription) {
+
+    }
+
+
 
 
     return (
-        <Container fluid style={{ height: "100vh", marginTop: "5rem" }}>
+        <Container fluid >
             <Row>
 
-                <Col xs={12} md={4} >
+                <Col xs={12} md={5} >
                     <Card
                         style={{
-                            backgroundColor: "transparent",
-                            padding: "1rem",
-
+                            backgroundColor: "transparent"
                         }}>
-                        <h1 style={{ backgroundColor: "white", borderRadius: 8, padding: 10, width: 340 }}>{
+                        <h1 style={{ backgroundColor: "white", borderRadius: 8, padding: 10, minWidth: "auto", textAlign: "center" }}>{
                             isCreating ? "Add Subscription" : isEditing ? "Edit Subscription" :
                                 isSearching ? "Search Subscriptions" : "Manage Subscriptions"
                         }</h1>
@@ -74,13 +47,13 @@ export default function SubscriptionList() {
                             <SubscriptionInputForm setIsCreating={setIsCreating} setSubscriptions={setSubscriptions} />
                         </> : <></>}
                         {isEditing ? <>
-                            <EditSubscriptionForm setIsEditing={setIsEditing} setSubscriptions={setSubscriptions} />
+                            <EditSubscriptionForm setSubscriptions={setSubscriptions} selectedSubscription={selectedSubscription} setIsEditing={setIsEditing} setIsCreating={setIsCreating}/>
                         </> : <></>}
                         {isSearching ? <></> : <></>}
                     </Card>
                 </Col>
 
-                <Col xs={12} md={8}
+                <Col xs={12} md={7}
                     style={{
                         backgroundColor: "transparent",
                         borderRadius: 10,
@@ -95,12 +68,16 @@ export default function SubscriptionList() {
                             priority={sub.priority}
                             title={sub.title}
                             price={sub.price}
-                            renewCycleTime={sub.renewCycleTime}
+                            renewCycle={sub.renewCycle}
                             renewDate={sub.renewDate}
+                            category={sub.category}
                             color={sub.color}
                             textColor={sub.textColor}
                             imgUrl={sub.imgUrl}
                             setSubs={setSubscriptions}
+                            setSelected={setSelectedSubscription}
+                            setIsEditing={setIsEditing}
+                            setIsCreating={setIsCreating}
                         />
                     )) || <><p>Loading...</p></>}
                 </Col>
