@@ -13,11 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html{
-  padding-top: 4rem;
-  padding-bottom: 2rem;
-}
-
 /*
 a {
   font-weight: 500;

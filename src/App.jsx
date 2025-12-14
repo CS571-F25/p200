@@ -62,7 +62,7 @@ function App() {
     <SubscriptionDataContext.Provider value={[ subscriptions, setSubscriptions ]}>
     <HashRouter>
       {/* Primary navigation bar */}
-      <Navbar bg="dark" variant="dark" fixed="top" expand="sm" collapseOnSelect>
+      <Navbar bg="dark" variant="dark">
         <Container fluid>
           <Navbar.Brand as={Link} to="/">
             SubTracker
